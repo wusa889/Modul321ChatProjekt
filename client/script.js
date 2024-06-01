@@ -12,6 +12,7 @@ socket.addEventListener("open", (event) => {
     type: "user",
     user,
   };
+  sessionStorage.setItem('user', 'John Doe')
   socket.send(JSON.stringify(message));
 });
 
@@ -50,9 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("btnTest").addEventListener("click", () => {
     const msgValue = document.getElementById("chatbox")
+    const user = sessionStorage.getItem('user')
     const message = {
       type: "message",
-      text: msgValue.value,
+      text: `${user}: ${msgValue.value}`,
     };
     socket.send(JSON.stringify(message));
     msgValue.value = ""
