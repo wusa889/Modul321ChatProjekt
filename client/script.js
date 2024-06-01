@@ -16,8 +16,11 @@ socket.addEventListener("open", (event) => {
 });
 
 const createMessage = (message) => {
+  let test = JSON.parse(message);
+  console.log(test)
+  console.log(test.text)
   const p = document.createElement("p");
-  p.textContent = message;
+  p.textContent = test.text;
   document.getElementById("messages").appendChild(p);
 };
 
@@ -44,5 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
       text: "Hello, server!",
     };
     socket.send(JSON.stringify(message));
+  });
+  document.getElementById("btnTest").addEventListener("click", () => {
+    const msgValue = document.getElementById("chatbox")
+    const message = {
+      type: "message",
+      text: msgValue.value,
+    };
+    socket.send(JSON.stringify(message));
+    msgValue.value = ""
   });
 });
