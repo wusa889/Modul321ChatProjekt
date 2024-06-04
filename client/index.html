@@ -9,7 +9,15 @@
     <link rel="stylesheet" href="/style.css" />
     <script src="/script.js"></script>
   </head>
-  <body class="w-screen h-screen flex justify-center items-center">
+  <body class="w-screen h-screen flex flex-col justify-between">
+    <header class="bg-gray-800 text-white w-full p-4 flex">
+      <div class="container mx-auto">
+        <h1 class="text-2xl underline"><a href="http://127.0.0.1:3000">My Chat App</a></h1>
+      </div>
+      <div class="flex flex-row justify-self-end"></div>
+      <button class="bg-blue-500 rounded-xl mr-5 w-20 h-10" type="button"><a href="http://127.0.0.1:3000/Login">Login</a></button>
+      <button class="bg-blue-500 rounded-xl mr-10 w-20 h-10" type="button"><a href="http://127.0.0.1:3000/register">Register</a></button>
+    </header>
     <div class="flex flex-col items-center gap-2">
       <h1 class="font-semibold">Hello 321</h1>
       <input type="text" id="chatbox" class="border-2">
@@ -27,5 +35,10 @@
       </button>
       <div id="messages" class="flex flex-col gap-2"></div>
     </div>
+    <footer class="bg-gray-800 text-white w-full p-4">
+      <div class="container mx-auto">
+        <p class="text-center">Footer</p>
+      </div>
+    </footer>
   </body>
 </html>

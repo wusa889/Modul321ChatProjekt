@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/login.js"></script>
+  </head>
+  <body class="w-screen h-screen flex flex-col justify-between">
+    <header class="bg-gray-800 text-white w-full p-4 flex">
+        <div class="container mx-auto">
+          <h1 class="text-2xl underline"><a href="http://127.0.0.1:3000">My Chat App</a></h1>
+        </div>
+        <div class="flex flex-row justify-self-end"></div>
+        <button class="bg-blue-500 rounded-xl mr-5 w-20 h-10" type="button"><a href="http://127.0.0.1:3000/Login">Login</a></button>
+        <button class="bg-blue-500 rounded-xl mr-10 w-20 h-10" type="button"><a href="http://127.0.0.1:3000/register">Register</a></button>
+      </header>
+    <main class="flex-grow flex flex-col justify-center items-center">
+        <h1 class="m-4 text-4xl">Login</h1>
+      <div
+        class="flex flex-col items-center justify-center shadow-2xl p-20 bg-neutral-200 rounded-2xl">
+          <form action="" id="myloginform">
+            <label for="username">Username:</label><br />
+            <input
+              class="border-2 items-stretch mb-4"
+              type="text"
+              id="username"
+              name="username"
+            /><br />
+            <label for="password">Password:</label><br />
+            <input
+              class="border-2"
+              type="password"
+              id="password"
+              name="password"
+            /> <br /> 
+            <button class="bg-blue-500 rounded-xl mt-2 mr-10 w-20 h-10" onclick="onSubmitForm(event)" type="submit">Login</button>
+            <button class="bg-red-500 rounded-xl mt-2 w-20 h-10" type="button" onclick="cancel()">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer class="bg-gray-800 text-white w-full p-4">
+      <div class="container mx-auto">
+        <p class="text-center">Footer</p>
+      </div>
+    </footer>
+  </body>
+</html>

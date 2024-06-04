@@ -12,7 +12,6 @@ socket.addEventListener("open", (event) => {
     type: "user",
     user,
   };
-  sessionStorage.setItem('user', 'John Doe')
   socket.send(JSON.stringify(message));
 });
 
