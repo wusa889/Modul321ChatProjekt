@@ -12,26 +12,19 @@
     <script src="/headerfooterbuilder.js"></script>
   </head>
   <body class="w-screen h-screen flex flex-col justify-between">
-    <header class="bg-gray-800 text-white w-full p-4 flex items-center justify-between" id="header">
-    </header>
-    <div class="flex flex-col items-center gap-2">
-      <h1 class="font-semibold">Hello 321</h1>
-      <input type="text" id="chatbox" class="border-2">
-      <button
-        id="btnSendHello"
-        class="rounded bg-red-300 hover:bg-red-500 p-2 px-4"
-      >
-        Send Hello To Server!
+    <header
+      class="bg-gray-800 text-white w-full p-4 flex items-center justify-between"
+      id="header"
+    ></header>
+    <div class="flex flex-col items-center gap-2 flex-grow">
+      <h1 class="font-semibold">Chat App</h1>
+      <div id="messages" class="flex flex-col flex-auto gap-2 border-2 border-black w-full max-w-screen-md overflow-auto" style="height: 80vh;"></div>
+      <input type="text" id="chatbox" class="border-2 w-full max-w-screen-md" />
+      <button id="btnTest" class="rounded bg-red-300 hover:bg-red-500 p-2 px-4">
+        Send Message
       </button>
-      <button
-        id="btnTest"
-        class="rounded bg-red-300 hover:bg-red-500 p-2 px-4"
-      >
-        Test Button
-      </button>
-      <div id="messages" class="flex flex-col gap-2"></div>
+      <div class="flex flex-col gap-2"></div>
     </div>
-    <footer class="bg-gray-800 text-white w-full p-4" id="footer">
-    </footer>
+    <footer class="bg-gray-800 text-white w-full p-4" id="footer"></footer>
   </body>
 </html>

@@ -53,6 +53,7 @@ const onMessage = (ws, messageBuffer) => {
       break;
     }
     case "message": {
+      console.log(clients)
       clients.forEach((client) => {
         client.ws.send(messageString);
       });

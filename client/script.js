@@ -6,7 +6,7 @@ const socket = new WebSocket("ws://localhost:3000");
 // Listen for WebSocket open event
 socket.addEventListener("open", (event) => {
   console.log("WebSocket connected.");
-  // Send a dummy user to the backend
+  //Send a dummy user to the backend
   const user = { id: 1, name: "John Doe" };
   const message = {
     type: "user",
@@ -16,11 +16,24 @@ socket.addEventListener("open", (event) => {
 });
 
 const createMessage = (message) => {
-  let test = JSON.parse(message);
-  console.log(test)
-  console.log(test.text)
+  let content = JSON.parse(message);
   const p = document.createElement("p");
-  p.textContent = test.text;
+  let textToPrint;
+  switch (content.type) {
+    case "user":
+      textToPrint = `${content.type}: ${content.user.name} `;
+      p.textContent = textToPrint;
+      break;
+
+    case "message":
+      if (content.text === "") {
+        break;
+      }
+      textToPrint = `${content.user}: ${content.text} `;
+      p.textContent = textToPrint;
+      break;
+  }
+  console.log("createt p");
   document.getElementById("messages").appendChild(p);
 };
 
@@ -41,21 +54,19 @@ socket.addEventListener("error", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("btnSendHello").addEventListener("click", () => {
-    const message = {
-      type: "message",
-      text: "Hello, server!",
-    };
-    socket.send(JSON.stringify(message));
-  });
   document.getElementById("btnTest").addEventListener("click", () => {
-    const msgValue = document.getElementById("chatbox")
-    const user = sessionStorage.getItem('displayname')
+    const msgValue = document.getElementById("chatbox");
+    if (msgValue.value.trim() === "") {
+      // If the message is empty, do nothing
+      return;
+    }
+    const user = sessionStorage.getItem("displayname") || "Anonymous";
     const message = {
       type: "message",
-      text: `${user}: ${msgValue.value}`,
+      text: msgValue.value,
+      user: user,
     };
     socket.send(JSON.stringify(message));
-    msgValue.value = ""
+    msgValue.value = ""; // Clear the input box after sending the message
   });
 });
