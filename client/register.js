@@ -17,14 +17,15 @@ function onSubmitForm(event) {
 
     // AJAX request to backend to register
     $.ajax({
-        url: 'http://localhost:3000/login',
+        url: 'http://localhost:3000/register',
         type: 'POST',
         contentType: 'application/json',
         data: `${JSON.stringify(dto)}`,
         success: response => {
             console.log(response);
-            sessionStorage.setItem('usernameVal', 'passwordVal')
+           // sessionStorage.setItem('usernameVal', 'passwordVal')
             document.getElementById("myregisterform").reset();
+            window.location.href = "http://127.0.0.1:3000/login"
         },
         error: (xhr, status, error) => {
             console.error("Fehler ", error)

@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("btnTest").addEventListener("click", () => {
     const msgValue = document.getElementById("chatbox")
-    const user = sessionStorage.getItem('user')
+    const user = sessionStorage.getItem('displayname')
     const message = {
       type: "message",
       text: `${user}: ${msgValue.value}`,

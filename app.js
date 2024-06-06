@@ -10,6 +10,7 @@ const {
   initializeDBSchema,
   executeSQL,
 } = require("./server/database");
+const { register, login } = require("./serverfunctions");
 
 // Create the express server
 const app = express();
@@ -47,15 +48,28 @@ app.get("/login", (req, res) => {
   res.sendFile(__dirname + "/client/login.html");
 });
 
-app.post("/login", (req, res) =>{
+app.post("/login", async (req, res) =>{
   let content = req.body
-  console.log(content)
-  res.sendStatus(200)
+  let returnVal = await login(content);
+  console.log(returnVal)
+  res.status(200).send(`${JSON.stringify(returnVal[0])}`)
 })
 
 app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/client/register.html");
 });
+
+app.post("/register", async (req, res) =>{
+  let content = req.body
+  console.log(content)
+ let returnVal = await register(content)
+ 
+ if(!returnVal){
+   res.status(400).send(`invalid content: ${JSON.stringify(content)}`)
+ }
+ res.sendStatus(200) 
+  
+})
 // Initialize the websocket server
 initializeWebsocketServer(server);
 // Initialize the REST api

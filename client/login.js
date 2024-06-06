@@ -15,14 +15,17 @@ function onSubmitForm(event) {
 
     // AJAX request to backend to login
     $.ajax({
-        url: 'http://localhost:3000/login',
+        url: '/login',
         type: 'POST',
         contentType: 'application/json',
         data: `${JSON.stringify(dto)}`,
         success: response => {
             console.log(response);
-            sessionStorage.setItem('usernameVal', 'passwordVal')
+            let resObj = JSON.parse(response)
+            console.log(resObj)
+            sessionStorage.setItem('displayname', `${resObj.displayname}`)
             document.getElementById("myloginform").reset();
+            window.location.href = "/"
         },
         error: (xhr, status, error) => {
             console.error("Fehler ", error)
