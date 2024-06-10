@@ -59,6 +59,15 @@ app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/client/register.html");
 });
 
+app.get("/chatroom", (req, res) => {
+  let login = req.body
+console.log(`body = ${login}`)
+  if(login == null){
+    res.sendStatus(403).sendFile(__dirname + "/client/login.html")
+  }
+  res.sendFile(__dirname + "/client/chatroom.html");
+});
+
 app.post("/register", async (req, res) =>{
   let content = req.body
   console.log(content)
