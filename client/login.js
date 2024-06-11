@@ -24,6 +24,7 @@ function onSubmitForm(event) {
             let resObj = JSON.parse(response)
             console.log(resObj)
             sessionStorage.setItem('displayname', `${resObj.displayname}`)
+            sessionStorage.setItem('id', `${resObj.id}`)
             document.getElementById("myloginform").reset();
             window.location.href = "/"
         },

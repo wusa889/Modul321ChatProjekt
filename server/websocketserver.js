@@ -1,5 +1,5 @@
 const WebSocket = require("ws");
-
+const { executeSQL } = require("./database");
 const clients = [];
 
 /**
@@ -45,18 +45,20 @@ const onMessage = (ws, messageBuffer) => {
       const usersMessage = {
         type: "users",
         users: clients.map((client) => client.user),
+        id: message.user.id,
+        text: `${message.user.name} connected`
       };
       clients.forEach((client) => {
-        client.ws.send(JSON.stringify(usersMessage));
+      client.ws.send(JSON.stringify(usersMessage));
       });
       ws.on("close", () => onDisconnect(ws));
       break;
     }
     case "message": {
-      console.log(clients)
       clients.forEach((client) => {
         client.ws.send(messageString);
       });
+      SaveChatmessageToDatabase(message)
       break;
     }
     default: {
@@ -84,4 +86,8 @@ const onDisconnect = (ws) => {
   });
 };
 
+async function SaveChatmessageToDatabase(message){
+let test = await executeSQL("INSERT INTO messages (user_id, message) VALUES (?, ?);", [message.id, message.text]);
+console.log(test)
+}
 module.exports = { initializeWebsocketServer };

@@ -61,7 +61,6 @@ app.get("/register", (req, res) => {
 
 app.get("/chatroom", (req, res) => {
   let login = req.body
-console.log(`body = ${login}`)
   if(login == null){
     res.sendStatus(403).sendFile(__dirname + "/client/login.html")
   }

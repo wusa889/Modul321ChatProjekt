@@ -6,23 +6,28 @@ const socket = new WebSocket("ws://localhost:3000");
 // Listen for WebSocket open event
 socket.addEventListener("open", (event) => {
   console.log("WebSocket connected.");
-  //Send a dummy user to the backend
-  const user = { id: 1, name: "John Doe" };
+  //Send the user to the backend
+  const user = {id: `${sessionStorage.getItem('id')}`,  name: `${sessionStorage.getItem('displayname')}`};
   const message = {
     type: "user",
-    user,
+    user: user
   };
   socket.send(JSON.stringify(message));
 });
 
 const createMessage = (message) => {
   let content = JSON.parse(message);
-  const p = document.createElement("p");
+  let p = document.createElement("p");
   let textToPrint;
   switch (content.type) {
-    case "user":
-      textToPrint = `${content.type}: ${content.user.name} `;
+    case "users":
+      FillUserBox(content)
+      if(content.id === sessionStorage.getItem("id") || content.id === undefined ){
+        break;
+      }
+      textToPrint = `${content.text}`;
       p.textContent = textToPrint;
+      document.getElementById("messages").appendChild(p);
       break;
 
     case "message":
@@ -31,10 +36,9 @@ const createMessage = (message) => {
       }
       textToPrint = `${content.user}: ${content.text} `;
       p.textContent = textToPrint;
+      document.getElementById("messages").appendChild(p);
       break;
   }
-  console.log("createt p");
-  document.getElementById("messages").appendChild(p);
 };
 
 // Listen for messages from server
@@ -60,13 +64,34 @@ document.addEventListener("DOMContentLoaded", () => {
       // If the message is empty, do nothing
       return;
     }
-    const user = sessionStorage.getItem("displayname") || "Anonymous";
+    const user = sessionStorage.getItem("displayname");
+    const userId = sessionStorage.getItem("id");
     const message = {
       type: "message",
       text: msgValue.value,
       user: user,
+      id: userId
     };
     socket.send(JSON.stringify(message));
     msgValue.value = ""; // Clear the input box after sending the message
   });
 });
+
+function findUserInArray(array, userid){
+  const username = array.find(user => user.id === userid);
+  return username;
+}
+
+function FillUserBox(message) {
+  if (message.type !== "users") {
+    return;
+  }
+
+  const userlist = document.getElementById("userlist");
+  userlist.innerHTML = '';  // Clear the current user list
+  message.users.forEach(user => {
+    let p = document.createElement("p");
+    p.textContent = user.name;
+    userlist.appendChild(p);  // Append new user element
+  });
+}
