@@ -13,6 +13,8 @@ const {
 const { register, login } = require("./serverfunctions");
 const { verifyToken } = require('./server/auth');
 
+const rootPath = __dirname;
+
 // Create the express server
 const app = express();
 const server = http.createServer(app);
