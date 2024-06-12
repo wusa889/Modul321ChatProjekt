@@ -25,24 +25,10 @@ function buildContent() {
 }
 
 function toChat() {
-var loginData = sessionStorage.getItem("displayname")
-var dto = {displayname: loginData}
-
-console.log(dto)
-console.log(JSON.stringify(dto))
-
-  $.ajax({
-    url: "/chatroom",
-    type: "GET",
-    contentType: "application/json",
-    data: `${JSON.stringify(dto)}`,
-    success: (response) => {
-      window.location.href = "/chatroom";
-    },
-    error: (xhr, status, error) => {
-      console.error("Fehler ", error);
-      logout();
-      window.location.href = "/login";
-    },
-  });
+  var token = sessionStorage.getItem("token");
+  if (token) {
+    window.location.href = "/chatroom?token=" + token;
+  } else {
+    window.location.href = "/";
+  }
 }

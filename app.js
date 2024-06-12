@@ -11,6 +11,7 @@ const {
   executeSQL,
 } = require("./server/database");
 const { register, login } = require("./serverfunctions");
+const { verifyToken } = require('./server/auth');
 
 // Create the express server
 const app = express();
@@ -48,23 +49,22 @@ app.get("/login", (req, res) => {
   res.sendFile(__dirname + "/client/login.html");
 });
 
-app.post("/login", async (req, res) =>{
-  let content = req.body
-  let returnVal = await login(content);
-  console.log(returnVal)
-  res.status(200).send(`${JSON.stringify(returnVal[0])}`)
-})
-
 app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/client/register.html");
 });
 
-app.get("/chatroom", (req, res) => {
-  let login = req.body
-  if(login == null){
-    res.sendStatus(403).sendFile(__dirname + "/client/login.html")
-  }
+app.get("/chatroom", verifyToken, (req, res) => {
   res.sendFile(__dirname + "/client/chatroom.html");
+});
+
+app.post("/login", async (req, res) =>{
+  let content = req.body;
+  let returnVal = await login(content);
+  if (returnVal.token) {
+    res.status(200).send({ message: returnVal.message, token: returnVal.token, displayname: returnVal.displayname, id: returnVal.id });
+  } else {
+    res.status(400).send({ message: returnVal.message });
+  }
 });
 
 app.post("/register", async (req, res) =>{
@@ -76,7 +76,6 @@ app.post("/register", async (req, res) =>{
    res.status(400).send(`invalid content: ${JSON.stringify(content)}`)
  }
  res.sendStatus(200) 
-  
 })
 // Initialize the websocket server
 initializeWebsocketServer(server);

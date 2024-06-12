@@ -2,7 +2,9 @@
 // Think about it when the backend is not running on the same server as the frontend
 // replace localhost with the server's IP address or domain name.
 const socket = new WebSocket("ws://localhost:3000");
-
+$(document).ready(() => {
+  removeTokenFromURL();
+});
 // Listen for WebSocket open event
 socket.addEventListener("open", (event) => {
   console.log("WebSocket connected.");
@@ -94,4 +96,10 @@ function FillUserBox(message) {
     p.textContent = user.name;
     userlist.appendChild(p);  // Append new user element
   });
+}
+
+function removeTokenFromURL() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('token');
+  window.history.replaceState({}, document.title, url.pathname);
 }
