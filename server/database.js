@@ -65,7 +65,7 @@ const initializeDBSchema = async () => {
   const messageTableQuery = `CREATE TABLE IF NOT EXISTS messages (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    message VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
   );`;
