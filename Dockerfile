@@ -2,16 +2,16 @@
 FROM node:22
 
 # Set the working directory inside the container
-WORKDIR ...
+WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the container
-COPY ...
+COPY . .
 
 # Install the dependencies
-RUN ...
+RUN npm install
 
 # Copy the source code to the container
-COPY ...
+EXPOSE 3000
 
 # Start the server when the container starts
-CMD ...
+CMD ["node", "app.js"]

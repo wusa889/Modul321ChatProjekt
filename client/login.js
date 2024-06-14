@@ -9,10 +9,6 @@ function onSubmitForm(event) {
     // pack values into dto
     let dto = { username: usernameVal, password: passwordVal };
     
-    // log values to debug
-    console.log(dto.password);
-    console.log(dto.username);
-
     // AJAX request to backend to login
     $.ajax({
         url: '/login',
@@ -21,7 +17,6 @@ function onSubmitForm(event) {
         data: JSON.stringify(dto),
         success: response => {
             let resObj = response;
-            console.log(resObj)
             sessionStorage.setItem('displayname', resObj.displayname);
             sessionStorage.setItem('token', resObj.token);
             sessionStorage.setItem('id', resObj.id);

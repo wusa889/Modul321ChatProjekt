@@ -10,11 +10,6 @@ function onSubmitForm(event) {
     // pack values into dto
     let dto = {username: usernameVal, password: passwordVal, displayname: displayNameVal}
 
-    // log values to debug
-    console.log(dto.username)
-    console.log(dto.password)
-    console.log(dto.displayname)
-
     // AJAX request to backend to register
     $.ajax({
         url: 'http://localhost:3000/register',
@@ -22,8 +17,6 @@ function onSubmitForm(event) {
         contentType: 'application/json',
         data: `${JSON.stringify(dto)}`,
         success: response => {
-            console.log(response);
-           // sessionStorage.setItem('usernameVal', 'passwordVal')
             document.getElementById("myregisterform").reset();
             window.location.href = "http://127.0.0.1:3000/login"
         },

@@ -75,8 +75,6 @@ async function getlastten() {
       `SELECT * FROM (SELECT * FROM messages ORDER BY created_at DESC LIMIT 10) sub ORDER BY created_at ASC;`
     );
 
-    console.log("Messages from DB:", messages);
-
     if (messages.length === 0) {
       return [];
     }

@@ -25,5 +25,19 @@ services:
     ports:
       - 9200:80
 
+  nodeapp:
+    image: wusa889/mychatapp:latest
+    depends_on:
+      - mariadb
+      - phpmyadmin
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=mariadb
+      - DB_NAME=mychat
+      - DB_USER=mychat
+      - DB_PASSWORD=mychatpassword
+
 volumes:
   m321_project_mariadb:

@@ -64,21 +64,17 @@ app.get("/changename", verifyToken, (req, res) => {
 });
 
 app.get("/lastten", verifyToken, async (req, res) => {
-  console.log("Fetching last 10 messages");
   const messages = await getlastten();
 
   if (messages === false) {
     console.log("Error retrieving messages");
     return res.status(500).send("Internal Server Error");
   }
-
-  console.log("Messages retrieved:", messages);
   res.status(200).json(messages);
 });
 
 app.post("/changename", async (req, res) => {
   let content = req.body;
-  console.log(content);
   let returnVal = await changename(content);
   if (returnVal === null) {
     res.status(400).send(`User not found: ${JSON.stringify(content)}`);
@@ -108,7 +104,6 @@ app.post("/login", async (req, res) => {
 
 app.post("/register", async (req, res) => {
   let content = req.body;
-  console.log(content);
   let returnVal = await register(content);
 
   if (!returnVal) {

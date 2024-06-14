@@ -12,10 +12,6 @@ function onSubmitForm(event) {
     // pack values into dto
     let dto = {id: sessionStorage.getItem("id"), displayname: usernameVal}
 
-    // log values to debug
-    console.log(dto.id)
-    console.log(dto.displayname)
-
     // AJAX request to backend to register
     const token = sessionStorage.getItem('authToken');
 
@@ -28,7 +24,6 @@ function onSubmitForm(event) {
           'Authorization': `Bearer ${token}`
         },
         success: response => {
-          console.log(`Response received: ${JSON.stringify(response)}`);
           sessionStorage.setItem('displayname', response.displayname);
           document.getElementById("displaynameform").reset();
           window.location.href = "/";

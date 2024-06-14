@@ -80,8 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
       id: userId
     };
     socket.send(JSON.stringify(message));
-    console.log("Message object sent to backend: ")
-    console.log(JSON.stringify(message))
     msgValue.value = ""; // Clear the input box after sending the message
   });
 });
