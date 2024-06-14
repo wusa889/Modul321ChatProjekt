@@ -2,7 +2,10 @@
 // Think about it when the backend is not running on the same server as the frontend
 // replace localhost with the server's IP address or domain name.
 const socket = new WebSocket("ws://localhost:3000");
-
+$(document).ready(() => {
+  removeTokenFromURL();
+  getLastTenMessages();
+});
 // Listen for WebSocket open event
 socket.addEventListener("open", (event) => {
   console.log("WebSocket connected.");
@@ -34,7 +37,8 @@ const createMessage = (message) => {
       if (content.text === "") {
         break;
       }
-      textToPrint = `${content.user}: ${content.text} `;
+      let timestamp = getFormattedTimestamp();
+      textToPrint = `${timestamp} ${content.user}: ${content.text} `;
       p.textContent = textToPrint;
       document.getElementById("messages").appendChild(p);
       break;
@@ -66,13 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const user = sessionStorage.getItem("displayname");
     const userId = sessionStorage.getItem("id");
+    let timestamp = getFormattedTimestamp();
+    let fullmessagestring = `${timestamp} ${user}: ${msgValue.value}`
     const message = {
       type: "message",
       text: msgValue.value,
+      fullstring: fullmessagestring,
       user: user,
       id: userId
     };
     socket.send(JSON.stringify(message));
+    console.log("Message object sent to backend: ")
+    console.log(JSON.stringify(message))
     msgValue.value = ""; // Clear the input box after sending the message
   });
 });
@@ -94,4 +103,51 @@ function FillUserBox(message) {
     p.textContent = user.name;
     userlist.appendChild(p);  // Append new user element
   });
+}
+
+function removeTokenFromURL() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('token');
+  window.history.replaceState({}, document.title, url.pathname);
+}
+
+function getLastTenMessages(){
+  let token = sessionStorage.getItem("token");
+  
+  $.ajax({
+    url: '/lastten',
+    type: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    success: response => {
+      response.map(o => {
+        let p = document.createElement("p");
+        let textToPrint = o.fullmessagestring;
+        p.textContent = textToPrint;
+        document.getElementById("messages").appendChild(p);
+      })
+    },
+    error: (xhr, status, error) => {
+      console.error("Error ", error);
+      console.error("Status ", status);
+      console.error("Response: ", xhr.responseText);
+    }
+  });
+
+}
+
+function getFormattedTimestamp() {
+  const now = new Date();
+
+  // Get the day, month, year, hour, and minute
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hour = String(now.getHours()).padStart(2, '0');
+  const minute = String(now.getMinutes()).padStart(2, '0');
+
+  // Format the timestamp
+  const formattedTimestamp = `${day}.${month}.${year} ${hour}:${minute}`;
+  return formattedTimestamp;
 }

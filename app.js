@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require("http");
-const cors = require('cors');
+const cors = require("cors");
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 const { initializeWebsocketServer } = require("./server/websocketserver");
@@ -10,7 +10,10 @@ const {
   initializeDBSchema,
   executeSQL,
 } = require("./server/database");
-const { register, login } = require("./serverfunctions");
+const { register, login, changename, getlastten } = require("./serverfunctions");
+const { verifyToken } = require("./server/auth");
+
+const rootPath = __dirname;
 
 // Create the express server
 const app = express();
@@ -48,36 +51,71 @@ app.get("/login", (req, res) => {
   res.sendFile(__dirname + "/client/login.html");
 });
 
-app.post("/login", async (req, res) =>{
-  let content = req.body
-  let returnVal = await login(content);
-  console.log(returnVal)
-  res.status(200).send(`${JSON.stringify(returnVal[0])}`)
-})
-
 app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/client/register.html");
 });
 
-app.get("/chatroom", (req, res) => {
-  let login = req.body
-  if(login == null){
-    res.sendStatus(403).sendFile(__dirname + "/client/login.html")
-  }
+app.get("/chatroom", verifyToken, (req, res) => {
   res.sendFile(__dirname + "/client/chatroom.html");
 });
 
-app.post("/register", async (req, res) =>{
-  let content = req.body
-  console.log(content)
- let returnVal = await register(content)
- 
- if(!returnVal){
-   res.status(400).send(`invalid content: ${JSON.stringify(content)}`)
- }
- res.sendStatus(200) 
-  
-})
+app.get("/changename", verifyToken, (req, res) => {
+  res.sendFile(__dirname + "/client/changename.html");
+});
+
+app.get("/lastten", verifyToken, async (req, res) => {
+  console.log("Fetching last 10 messages");
+  const messages = await getlastten();
+
+  if (messages === false) {
+    console.log("Error retrieving messages");
+    return res.status(500).send("Internal Server Error");
+  }
+
+  console.log("Messages retrieved:", messages);
+  res.status(200).json(messages);
+});
+
+app.post("/changename", async (req, res) => {
+  let content = req.body;
+  console.log(content);
+  let returnVal = await changename(content);
+  if (returnVal === null) {
+    res.status(400).send(`User not found: ${JSON.stringify(content)}`);
+  } else if (returnVal === false) {
+    res.status(500).send("Internal Server Error");
+  } else {
+    res.status(200).send({ displayname: returnVal.displayname });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  let content = req.body;
+  let returnVal = await login(content);
+  if (returnVal.token) {
+    res
+      .status(200)
+      .send({
+        message: returnVal.message,
+        token: returnVal.token,
+        displayname: returnVal.displayname,
+        id: returnVal.id,
+      });
+  } else {
+    res.status(400).send({ message: returnVal.message });
+  }
+});
+
+app.post("/register", async (req, res) => {
+  let content = req.body;
+  console.log(content);
+  let returnVal = await register(content);
+
+  if (!returnVal) {
+    res.status(400).send(`invalid content: ${JSON.stringify(content)}`);
+  }
+  res.sendStatus(200);
+});
 // Initialize the websocket server
 initializeWebsocketServer(server);
 // Initialize the REST api
