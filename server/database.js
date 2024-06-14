@@ -66,6 +66,8 @@ const initializeDBSchema = async () => {
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     message TEXT NOT NULL,
+    fullmessagestring TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
   );`;

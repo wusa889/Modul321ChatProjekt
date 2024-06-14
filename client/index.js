@@ -12,7 +12,7 @@ function buildContent() {
       "displayname"
     )}</h1>
         <button class="bg-blue-500 rounded-xl mb-5 mr-5 w-60 h-10" type="button" onclick="toChat()">to the chatroom</button></br>
-        <a href="/register" ><button class="bg-blue-500 rounded-xl mr-5 w-60 h-10" type="button">change display name</button></a>
+        <button class="bg-blue-500 rounded-xl mr-5 w-60 h-10" type="button" onclick="toChangename()">change display name</button>
   `;
 
   maincontent.innerHTML = null;
@@ -21,6 +21,15 @@ function buildContent() {
     maincontent.innerHTML += mainContentLoggedIn;
   } else {
     maincontent.innerHTML += mainContentNotLoggedIn;
+  }
+}
+
+function toChangename() {
+  var token = sessionStorage.getItem("token");
+  if (token) {
+    window.location.href = "/changename?token=" + token;
+  } else {
+    window.location.href = "/";
   }
 }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/changename.js"></script>
+    <script src="/headerfooterbuilder.js"></script>
+  </head>
+  <body class="w-screen h-screen flex flex-col justify-between">
+    <header class="bg-gray-800 text-white w-full p-4 flex" id="header">
+    </header>
+    <main class="flex-grow flex flex-col justify-center items-center">
+        <h1 class="m-4 text-4xl">Change Displayname</h1>
+      <div
+        class="flex flex-col items-center justify-center shadow-2xl p-20 bg-neutral-200 rounded-2xl">
+          <form action="" id="displaynameform">
+            <label for="displayname">New Displayname:</label><br />
+            <input
+              class="border-2 items-stretch mb-4"
+              type="text"
+              id="displayname"
+              name="displayname"
+            /> <br /> 
+            <button class="bg-blue-500 rounded-xl mt-2 mr-10 w-20 h-10" onclick="onSubmitForm(event)" type="submit">Change</button>
+            <button class="bg-red-500 rounded-xl mt-2 w-20 h-10" type="button" onclick="cancel()">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer class="bg-gray-800 text-white w-full p-4" id="footer">
+    </footer>
+  </body>
+</html>

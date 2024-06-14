@@ -87,7 +87,6 @@ const onDisconnect = (ws) => {
 };
 
 async function SaveChatmessageToDatabase(message){
-let test = await executeSQL("INSERT INTO messages (user_id, message) VALUES (?, ?);", [message.id, message.text]);
-console.log(test)
+let saveMessage = await executeSQL("INSERT INTO messages (user_id, message, fullmessagestring) VALUES (?, ?, ?);", [message.id, message.text, message.fullstring]);
 }
 module.exports = { initializeWebsocketServer };
